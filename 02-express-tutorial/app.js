@@ -1,23 +1,16 @@
 const express = require('express');
-const path = require('path');
 const app = express();
+// req => middleware => res
+const logger = require('./logger');
+const authorize = require('./autorize');
+app.use('/api', [logger, authorize])
 
-const { products } = require('./data')
-// setup static and middleware
-app.use(express.static('./public'))
-
-// app.get('/', (req,res) => {
-//     res.sendFile(path.resolve(__dirname, './navbar-app/index.html'))
-// })
-
-app.get('/', (req,res) => {
-    res.send('<h1><My Page/h1><a href="/api/products">products</a>')
+app.get('/', (req, res) => {
+    res.send('Home');
 })
 
-
-
-app.all('*', (req,res) => {
-    res.status(404).send('404 not found')
+app.get('/about', (req, res) => {
+    res.send('About');
 })
 
 app.listen(5000, () => {
